@@ -1,0 +1,108 @@
+﻿@model List<Haircut>
+
+@{
+    ViewData["Title"] = "corte de pelo";
+}
+
+<div class="pagetitle">
+    <h1>Haircut</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+            <li class="breadcrumb-item active">Haircut</li>
+        </ol>
+    </nav>
+</div>
+
+
+<section class="section dashboard">
+
+    <div class="card">
+
+        <div class="card-header py-3">
+
+            <div class="row">
+
+                <h3 class="m-0 font-weight-bold text-primary col-md-11">Blogs</h3>
+
+                <div class="col-md-1">
+                    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="card-body mt-2">
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (Haircut item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>@item.Category</td>
+                            <td>@item.Rating<td>
+                            <td>
+
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-fill"></i></a>
+
+                                <form asp-action="Delete" asp-route-id="@item.Id" style="display:contents">
+                                    <button class="btn btn-danger btn-sm btnDelete"><i class="bi bi-trash-fill"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('.btnDelete').click(function (event) {
+
+                event.preventDefault();
+
+                Swal.fire({
+
+                    title: "¿Desea eliminar el blog?",
+                    text: "No podrá revertirlo",
+                    icon: "question",
+                    showCancelButton: true,
+
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        const form = $(this).closest('form');
+
+                        form.submit();
+                    }
+                });
+
+            });
+        });
+
+    </script>
+
+}
