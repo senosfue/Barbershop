@@ -23,10 +23,10 @@
 
             <div class="row">
 
-                <h3 class="m-0 font-weight-bold text-primary col-md-11">Blogs</h3>
+                <h3 class="m-2 font-weight-bold col-md-11" style="font-family: 'Roboto', sans-serif; color: #000000; font-style: italic; padding: 10px">Cortes</h3>
 
                 <div class="col-md-1">
-                    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
+                    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-square-fill"></i></a>
                 </div>
 
             </div>
@@ -34,9 +34,10 @@
 
         </div>
 
-        <div class="card-body mt-2">
+        <div class="card-body mt-3">
+            <h5 class="card-title">Tabla De Cortes</h5>
 
-            <table class="table table-bordered">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">Id</th>
@@ -53,15 +54,31 @@
                         <tr>
                             <td>@item.Id</td>
                             <td>@item.Name</td>
-                            <td>@item.Category</td>
+                            <td>@item.Category.CategoryName</td>
                             <td>@item.Rating<td>
                             <td>
+                            
+                                <div class="d-flex">
+                                    <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-dark btn-sm me-2">
+                                        <i class="bi bi-brush-fill"></i> Editar
+                                    </a>
 
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-fill"></i></a>
+                                    <form asp-action="Delete" asp-route-Id="@item.Id" method="post" class="m-0">
+                                        <button type="submit" class="btn btn-danger btn-sm btnDelete">
+                                            <i class="bi bi-trash2-fill"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            
 
-                                <form asp-action="Delete" asp-route-id="@item.Id" style="display:contents">
+                                @* <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-dark"><i class="bi bi-brush-fill"></i></a>
+
+                                <form asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-danger ">
+                                    <button class="btn btn-danger btn-sm btnDelete"><i class="bi bi-trash2-fill"></i></button>
+                                </form> *@
+                               @*  <form asp-action="Delete" asp-route-id="@item.Id" style="display:contents">
                                     <button class="btn btn-danger btn-sm btnDelete"><i class="bi bi-trash-fill"></i></button>
-                                </form>
+                                </form> *@
                             </td>
                         </tr>
                     }
@@ -85,7 +102,7 @@
 
                 Swal.fire({
 
-                    title: "¿Desea eliminar el blog?",
+                    title: "¿Desea eliminar la Blog?",
                     text: "No podrá revertirlo",
                     icon: "question",
                     showCancelButton: true,
