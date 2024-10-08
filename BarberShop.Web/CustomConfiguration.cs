@@ -1,4 +1,7 @@
-﻿using BarberShop.Web.Data;
+﻿using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
+using BarberShop.Web.Data;
+using BarberShop.Web.Helpers;
 using BarberShop.Web.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +24,14 @@ namespace BarberShop.Web
             // Services
             AddServices(builder);
 
+            //Toast Notification
+            builder.Services.AddNotyf(config =>
+            {
+                config.DurationInSeconds = 10;
+                config.IsDismissable = true;
+                config.Position = NotyfPosition.BottomLeft;
+            });
+
             return builder;
 
 
@@ -29,6 +40,15 @@ namespace BarberShop.Web
         {
             //services
             builder.Services.AddScoped<IHaircutServices, HaircutServices>();
+            builder.Services.AddScoped<ICategoriesService, CategoriesService>();
+            //helpers
+            builder.Services.AddScoped<ICombosHelper, CombosHelper>();
+            builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
+        }
+        public static WebApplication AddCustomWebAppConfiguration(this WebApplication app)
+        {
+            app.UseNotyf();
+            return app;
         }
     }       
 }

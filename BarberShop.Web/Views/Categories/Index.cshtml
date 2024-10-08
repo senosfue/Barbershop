@@ -1,0 +1,136 @@
+﻿@model List<Category>
+@{
+   
+    ViewData["Title"] = "Categorias";
+}
+
+
+
+<div class="pagetitle">
+
+    <h1>Categorias</h1>
+
+    <nav>
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">DashBoard</a></li>
+            <li class="breadcrumb-item active">Categorias</li>
+
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+
+    <div class="card">
+        <div class="card-header">
+
+            <div class="row">
+
+                <!-- H3 ESTANDAR PARA LOS FORMS -->
+                <h3 class="m-2 font-weight-bold col-md-11" style="font-family: 'Roboto', sans-serif; color: #000000; font-style: italic; padding: 10px">Categorias</h3>
+                
+
+
+                <div class="col-md-1">
+
+                    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-square-fill"></i></a>
+
+                </div>
+
+            </div>
+
+      
+        </div>
+
+
+        <div class="card-body mt-3">
+            <h5 class="card-title">Tabla De Categorias</h5>
+
+            <!-- Table with stripped rows -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+
+                        <th scope="col">Id</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">En tendencia</th>
+                        <th scope="col">Edad Dirijida</th>
+                        
+                    </tr>
+                </thead>
+
+                <tbody>
+                        
+                    @foreach (Category item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.CategoryName</td>
+                            <td>@item.Description</td>
+                            <td>@item.Trending</td>
+                            <td>@item.AgeGroup</td>
+
+                            <td>
+
+                                @* <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-dark"><i class="bi bi-brush-fill"></i></a>
+
+                                <a asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-danger ">
+                                    <i class="bi bi-trash2-fill"></i>
+                                </a> *@
+                            
+                                
+                                    <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-dark btn-sm me-2">
+                                        <i class="bi bi-brush-fill"></i> Editar
+                                    </a>
+
+                                    <form asp-action="Delete" asp-route-Id="@item.Id" method="post" class="m-0">
+                                        <button type="submit" class="btn btn-danger btn-sm btnDelete">
+                                            <i class="bi bi-trash2-fill"></i> Eliminar
+                                        </button>
+                                    </form>
+                               
+                            
+
+                                
+                            </td>              
+                        </tr>
+
+
+                    }
+
+         
+                </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+
+        </div>
+    </div>
+
+
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Usar delegación de eventos para elementos que pueden no estar presentes al cargar
+            $(document).on('click', '.btnDelete', function (event) {
+                event.preventDefault();
+
+                const form = $(this).closest('form');
+
+                Swal.fire({
+                    title: "¿Desea eliminar la categoría?",
+                    text: "No podrá revertirlo",
+                    icon: "question",
+                    showCancelButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Envía el formulario si se confirma
+                    }
+                });
+            });
+        });
+    </script>
+}

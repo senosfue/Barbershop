@@ -48,7 +48,7 @@ namespace BarberShop.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("BarberShop.Web.Data.Entities.Haircut", b =>
@@ -77,7 +77,7 @@ namespace BarberShop.Web.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Haircuts");
+                    b.ToTable("Haircuts", (string)null);
                 });
 
             modelBuilder.Entity("BarberShop.Web.Data.Entities.Haircut", b =>

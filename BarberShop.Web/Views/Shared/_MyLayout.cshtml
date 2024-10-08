@@ -11,11 +11,6 @@
 
     @Html.Partial("_Styles")
 
-
-    
-    <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
-
     <!-- =======================================================
     * Template Name: NiceAdmin
     * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
@@ -27,37 +22,27 @@
 
 <body>
 
-
-
+    <!-- ======= Header ======= -->
     @Html.Partial("_Header")
 
-
-
-
+    <!-- ======= Sidebar ======= -->
     @Html.Partial("_Sidebar")
 
-
+    <!-- ======= Body ======= -->
     <main id="main" class="main">
-
-
         @RenderBody()
-
-
     </main>
-
-
-
 
     <!-- ======= Footer ======= -->
     @Html.Partial("_Footer")
 
-
- 
-
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-    <!-- Scripts -->
+    <!-- ======= Footer ======= -->
     @Html.Partial("_Scripts")
+
+    @await Component.InvokeAsync("Notyf")
+
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
