@@ -42,8 +42,8 @@
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Category</th>
                         <th scope="col">Rating</th>
+                        <th scope="col">IdCategory</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -54,8 +54,8 @@
                         <tr>
                             <td>@item.Id</td>
                             <td>@item.Name</td>
-                            <td>@item.Category.CategoryName</td>
-                            <td>@item.Rating<td>
+                            <td>@item.Rating</td>
+                            <td>@item.IdCategory<td>
                             <td>
                             
                                 <div class="d-flex">
@@ -69,16 +69,7 @@
                                         </button>
                                     </form>
                                 </div>
-                            
-
-                                @* <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-dark"><i class="bi bi-brush-fill"></i></a>
-
-                                <form asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-danger ">
-                                    <button class="btn btn-danger btn-sm btnDelete"><i class="bi bi-trash2-fill"></i></button>
-                                </form> *@
-                               @*  <form asp-action="Delete" asp-route-id="@item.Id" style="display:contents">
-                                    <button class="btn btn-danger btn-sm btnDelete"><i class="bi bi-trash-fill"></i></button>
-                                </form> *@
+                                                      
                             </td>
                         </tr>
                     }

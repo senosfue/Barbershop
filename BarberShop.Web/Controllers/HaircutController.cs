@@ -7,6 +7,7 @@ using BarberShop.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NuGet.Protocol;
 using static System.Collections.Specialized.BitVector32;
 
 namespace BarberShop.Web.Controllers
@@ -63,5 +64,67 @@ namespace BarberShop.Web.Controllers
                 return RedirectToAction(nameof(Index));
 
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit([FromRoute]int id)
+        {
+            Response<Haircut> response = await _haircutServices.GetOneAsync(id);
+
+            if (response.IsSuccess)
+            { 
+                return View(response.Result);
+            }
+
+            _notifyService.Error(response.Message);
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Haircut haircut)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    _notifyService.Error("Debe ajustar los errores de validacion");
+                    return View(haircut);
+                }
+
+                Response<Haircut> response = await _haircutServices.EditAsyn(haircut);
+
+                if (response.IsSuccess)
+                {
+                    _notifyService.Success(response.Message);
+                    return RedirectToAction(nameof(Index));
+                }
+
+                _notifyService.Error(response.Message);
+                return View(response);
+            }
+            catch (Exception ex)
+            {
+                _notifyService.Error(ex.Message);
+                return View(haircut);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            Response<Haircut> response = await _haircutServices.DeleteAsyn(id);
+
+            if (response.IsSuccess)
+            {
+                _notifyService.Success(response.Message);
+            }
+            else
+            {
+                _notifyService.Error(response.Message);
+            }
+
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
     }
 }
+    
+

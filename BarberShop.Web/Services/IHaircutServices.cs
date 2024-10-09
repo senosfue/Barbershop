@@ -12,7 +12,10 @@ namespace BarberShop.Web.Services
     public interface IHaircutServices
     {
         public Task<Response<Haircut>> CreateAsyn(HaircutDTO dto );
+        public Task<Response<Haircut>> DeleteAsyn(int id);//
+        public Task<Response<Haircut>> EditAsyn(Haircut haircut);//
         public Task<Response<List<Haircut>>> GetListAsync();
+        public Task<Response<Haircut>> GetOneAsync(int id);//
     }
     public class HaircutServices : IHaircutServices
     {
@@ -55,6 +58,59 @@ namespace BarberShop.Web.Services
             catch (Exception ex)
             {
                 return ResponseHelper < List <Haircut>>.MakeResponseFail(ex);
+            }
+        }
+
+        public async Task<Response<Haircut>> EditAsyn(Haircut model)
+        {
+            try
+            {
+                _context.Haircuts.Update(model);
+                await _context.SaveChangesAsync();
+
+                return ResponseHelper<Haircut>.MakeResponseSuccess(model, "Haircut actualizado con exito");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper<Haircut>.MakeResponseFail(ex);
+            }
+        }
+
+        public async Task<Response<Haircut>> DeleteAsyn(int id)
+        {
+            try
+            {
+                Response<Haircut> response = await GetOneAsync(id);
+                if (!response.IsSuccess)
+                {
+                    return response;
+                }
+                _context.Haircuts.Remove(response.Result);
+                await _context.SaveChangesAsync();
+                return ResponseHelper<Haircut>.MakeResponseSuccess(null, "seccion eliminada con exito");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper<Haircut>.MakeResponseFail(ex);
+            }
+        }
+
+        public async Task<Response<Haircut>> GetOneAsync(int id)
+        {
+            try
+            {
+                Haircut? haircut = await _context.Haircuts.FirstOrDefaultAsync(s => s.Id == id);
+
+                if (haircut is null)
+                {
+                    return ResponseHelper<Haircut>.MakeResponseFail(null, "la seccion con el id indicado no existe");
+                }
+
+                return ResponseHelper<Haircut>.MakeResponseSuccess(haircut);
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper<Haircut>.MakeResponseFail(ex);
             }
         }
     }
