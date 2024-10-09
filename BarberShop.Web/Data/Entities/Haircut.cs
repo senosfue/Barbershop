@@ -14,8 +14,13 @@ namespace BarberShop.Web.Data.Entities
         [Display(Name = "Calificacion")]
         [Required(ErrorMessage = "Este campo '{0}' es obligatorio")]
         public int Rating {  get; set; }
-        public Category Category { get; set; }
+
         
+        public Category Category { get; set; }
+
+
+
+        [Display(Name = "Categoría")]
         public int IdCategory { get; set; }
     }
 }

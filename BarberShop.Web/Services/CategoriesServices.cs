@@ -109,6 +109,8 @@ namespace BarberShop.Web.Services
 
             }
         }
+
+
         public async Task<Response<Category>> GetOneAsync(int id)
         {
             try

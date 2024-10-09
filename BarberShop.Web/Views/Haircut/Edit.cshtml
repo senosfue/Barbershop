@@ -8,8 +8,8 @@
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
-            <li class="breadcrumb-item"><a asp-action="Index">Blog</a></li>
-            <li class="breadcrumb-item active">nuevo Blog</li>
+            <li class="breadcrumb-item"><a asp-action="Index">Cortes</a></li>
+            <li class="breadcrumb-item active">Editar corte</li>
         </ol>
     </nav>
 </div>
@@ -17,16 +17,23 @@
 <section class="section dashboard">
 
     <div class="card-body">
-        <h5 class="card-title text-primary">Nuevo Blog</h5>
+        <h5 class="card-title text-primary">Editar Corte</h5>
 
 
-        <form class="row g-3" asp-action="Create" method="POST">
+        <form class="row g-3" asp-action="Edit" method="POST">
             <div class="col-md-12">
                 <div class="form-floating">
                     <input asp-for="Name" class="form-control" id="floatingName" placeholder="@Html.DisplayFor(model => model.Name)">
                     <label asp-for="Name"></label>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
+            </div>
+
+
+            <div>
+                <label asp-for="Rating" class="form-label">Calificacion (0-5) Estrellas</label>
+                <input asp-for="Rating" type="range" class="form-range" min="0" max="5" step="1" id="customRange2">
+                <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
 
             <div class="col-md-12">
@@ -37,11 +44,7 @@
                 </div>
             </div>
 
-            <div>
-                <label asp-for="Rating" class="form-label">Min and max with steps</label>
-                <input asp-for="Rating" type="range" class="form-range" min="0" max="5" step="1" id="customRange2">
-                <span asp-validation-for="Rating" class="text-danger"></span>
-            </div>
+            
 
 
             <div class="text-center">

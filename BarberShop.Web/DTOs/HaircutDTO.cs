@@ -20,6 +20,7 @@ namespace BarberShop.Web.DTOs
         [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar una categoria")]
         public Category? Category { get; set; }
 
+        [Display(Name = "Categoría")]
         public int IdCategory { get; set; }
         public IEnumerable<SelectListItem>? Categorys{ get; set; }
     }

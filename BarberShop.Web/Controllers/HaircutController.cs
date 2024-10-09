@@ -4,8 +4,10 @@ using BarberShop.Web.Data.Entities;
 using BarberShop.Web.DTOs;
 using BarberShop.Web.Helpers;
 using BarberShop.Web.Services;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NuGet.Protocol;
 using static System.Collections.Specialized.BitVector32;
@@ -70,25 +72,43 @@ namespace BarberShop.Web.Controllers
             Response<Haircut> response = await _haircutServices.GetOneAsync(id);
 
             if (response.IsSuccess)
-            { 
-                return View(response.Result);
+            {
+                HaircutDTO dto = new HaircutDTO
+                {
+                    Id = response.Result.Id,
+                    Name = response.Result.Name,
+                    Rating = response.Result.Rating,
+                    // Mapear otros atributos de Haircut a HaircutDTO según corresponda
+                    Categorys = await _combosHelper.GetCombosCategory() // Si es necesario
+                };
+                return View(dto);
             }
 
             _notifyService.Error(response.Message);
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(Haircut haircut)
+        public async Task<IActionResult> Edit(HaircutDTO dto)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
                     _notifyService.Error("Debe ajustar los errores de validacion");
-                    return View(haircut);
+                    dto.Categorys = await _combosHelper.GetCombosCategory(); // Cargar categorías si es necesario
+                    return View(dto);
                 }
 
-                Response<Haircut> response = await _haircutServices.EditAsyn(haircut);
+                Haircut haircut = new Haircut
+                {
+                    Id = dto.Id,
+                    Name = dto.Name,
+                    Rating = dto.Rating,
+                    IdCategory = dto.IdCategory,
+                    
+                };
+
+                Response<Haircut> response = await _haircutServices.EditAsyn(dto);
 
                 if (response.IsSuccess)
                 {
@@ -97,12 +117,12 @@ namespace BarberShop.Web.Controllers
                 }
 
                 _notifyService.Error(response.Message);
-                return View(response);
+                return View(dto);
             }
             catch (Exception ex)
             {
                 _notifyService.Error(ex.Message);
-                return View(haircut);
+                return View(dto);
             }
         }
         [HttpPost]
@@ -123,6 +143,8 @@ namespace BarberShop.Web.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
+       
 
     }
 }

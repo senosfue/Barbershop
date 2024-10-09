@@ -5,6 +5,7 @@ using BarberShop.Web.DTOs;
 using BarberShop.Web.Helpers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 using static System.Collections.Specialized.BitVector32;
 
 namespace BarberShop.Web.Services
@@ -13,7 +14,7 @@ namespace BarberShop.Web.Services
     {
         public Task<Response<Haircut>> CreateAsyn(HaircutDTO dto );
         public Task<Response<Haircut>> DeleteAsyn(int id);//
-        public Task<Response<Haircut>> EditAsyn(Haircut haircut);//
+        public Task<Response<Haircut>> EditAsyn(HaircutDTO dto);//
         public Task<Response<List<Haircut>>> GetListAsync();
         public Task<Response<Haircut>> GetOneAsync(int id);//
     }
@@ -47,6 +48,8 @@ namespace BarberShop.Web.Services
             }
         }
 
+
+
         public async Task<Response<List<Haircut>>> GetListAsync()
         {
             try
@@ -61,20 +64,32 @@ namespace BarberShop.Web.Services
             }
         }
 
-        public async Task<Response<Haircut>> EditAsyn(Haircut model)
+        public async Task<Response<Haircut>> EditAsyn(HaircutDTO dto)
         {
             try
             {
-                _context.Haircuts.Update(model);
+                Haircut haircut = await _context.Haircuts.FirstOrDefaultAsync(b => b.Id == dto.Id);
+
+                
+
+                //blog = _converterHelper.ToBlog(dto);
+
+                haircut.Name = dto.Name;
+                haircut.Rating = dto.Rating;
+                haircut.IdCategory = dto.IdCategory;
+                
+
+                _context.Haircuts.Update(haircut);
                 await _context.SaveChangesAsync();
 
-                return ResponseHelper<Haircut>.MakeResponseSuccess(model, "Haircut actualizado con exito");
+                return ResponseHelper<Haircut>.MakeResponseSuccess(haircut, "Blog actualizado con éxito");
             }
             catch (Exception ex)
             {
                 return ResponseHelper<Haircut>.MakeResponseFail(ex);
             }
         }
+
 
         public async Task<Response<Haircut>> DeleteAsyn(int id)
         {
