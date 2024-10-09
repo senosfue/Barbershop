@@ -29,10 +29,8 @@ namespace BarberShop.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AgeGroup")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                    b.Property<int>("AgeGroup")
+                        .HasColumnType("int");
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
@@ -48,7 +46,7 @@ namespace BarberShop.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("BarberShop.Web.Data.Entities.Haircut", b =>
@@ -77,7 +75,7 @@ namespace BarberShop.Web.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Haircuts", (string)null);
+                    b.ToTable("Haircuts");
                 });
 
             modelBuilder.Entity("BarberShop.Web.Data.Entities.Haircut", b =>

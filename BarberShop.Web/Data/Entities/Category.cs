@@ -24,8 +24,8 @@ namespace BarberShop.Web.Data.Entities
 
 
         [Display(Name = "Edad Del Estilo")]
-        [MaxLength(32)]
-        public string AgeGroup { get; set; } //una breve descripcion
+        [Required(ErrorMessage = "Este campo '{0}' es obligatorio")]
+        public int AgeGroup { get; set; } //una breve descripcion
 
 
 

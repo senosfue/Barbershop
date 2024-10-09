@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarberShop.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241006003520_AddHaircutsTable")]
-    partial class AddHaircutsTable
+    [Migration("20241009002922_AddCategoriesHaircutTables")]
+    partial class AddCategoriesHaircutTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,10 +32,8 @@ namespace BarberShop.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AgeGroup")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                    b.Property<int>("AgeGroup")
+                        .HasColumnType("int");
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
