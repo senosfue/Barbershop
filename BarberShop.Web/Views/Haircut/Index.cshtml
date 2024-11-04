@@ -1,4 +1,4 @@
-﻿@model List<Haircut>
+﻿@model PaginationResponse<Haircut>
 
 @{
     ViewData["Title"] = "corte de pelo";
@@ -35,6 +35,23 @@
         </div>
 
         <div class="card-body mt-3">
+            <form class="navbar-search" asp-action="Index" method="GET">
+
+                <input type="hidden" name="Page" value="@Model.CurrentPage" />
+                <input type="hidden" name="RecordsPerPage" value="@Model.RecordsPerPage" />
+
+                <div class="input<group mb-3">
+
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar..." aria-label="Search" asp-form="@Model.Filter" name="Filter" />
+                    
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type= "submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+            
+            </form>
             <h5 class="card-title">Tabla De Cortes</h5>
 
             <table class="table table-striped">
@@ -49,7 +66,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach (Haircut item in Model)
+                    @foreach (Haircut item in Model.List)
                     {
                         <tr>
                             <td>@item.Id</td>

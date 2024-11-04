@@ -1,4 +1,5 @@
 ﻿using BarberShop.Web.Core;
+using BarberShop.Web.Core.Pagination;
 using BarberShop.Web.Data;
 using BarberShop.Web.Data.Entities;
 using BarberShop.Web.DTOs;
@@ -15,7 +16,7 @@ namespace BarberShop.Web.Services
         public Task<Response<Haircut>> CreateAsyn(HaircutDTO dto );
         public Task<Response<Haircut>> DeleteAsyn(int id);//
         public Task<Response<Haircut>> EditAsyn(HaircutDTO dto);//
-        public Task<Response<List<Haircut>>> GetListAsync();
+        public Task<Response<PaginationResponse<Haircut>>> GetListAsync(PaginationRequest request);
         public Task<Response<Haircut>> GetOneAsync(int id);//
     }
     public class HaircutServices : IHaircutServices
@@ -50,17 +51,34 @@ namespace BarberShop.Web.Services
 
 
 
-        public async Task<Response<List<Haircut>>> GetListAsync()
+        public async Task<Response<PaginationResponse<Haircut>>> GetListAsync(PaginationRequest request)
         {
             try
             {
-                List<Haircut> haircuts = await _context.Haircuts.Include(b=>b.Category).ToListAsync();
+                IQueryable<Haircut> query = _context.Haircuts.AsQueryable();
 
-                return ResponseHelper<List<Haircut>>.MakeResponseSuccess(haircuts);
+                if (!string.IsNullOrWhiteSpace(request.Filter))
+                {
+                    query = query.Where(s => s.Name.ToLower().Contains(request.Filter.ToLower()));
+                }
+
+                PagedList<Haircut> list = await PagedList<Haircut>.ToPagedListAsync(query, request);
+
+                PaginationResponse<Haircut> result = new PaginationResponse<Haircut>
+                {
+                    List = list,
+                    TotalCount = list.TotalCount,
+                    RecordsPerPage = list.RecordsPerPage,
+                    CurrentPage = list.CurrentPage,
+                    TotalPages = list.TotalPages,
+                    Filter = request.Filter
+                };
+
+                return ResponseHelper<PaginationResponse<Haircut>>.MakeResponseSuccess(result, "Haircuts obtenidos con exito.");
             }
             catch (Exception ex)
             {
-                return ResponseHelper < List <Haircut>>.MakeResponseFail(ex);
+                return ResponseHelper < PaginationResponse <Haircut>>.MakeResponseFail(ex);
             }
         }
 
