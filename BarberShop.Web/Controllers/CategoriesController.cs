@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using BarberShop.Web.Core;
+using BarberShop.Web.Core.Pagination;
 using BarberShop.Web.Data.Entities;
 using BarberShop.Web.Helpers;
 using BarberShop.Web.Services;
@@ -22,10 +23,19 @@ namespace BarberShop.Web.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] int? RecordsPerPage,
+                                              [FromQuery] int? Page,
+                                              [FromQuery] string? Filter)
         {
-            Response<List<Category>> response = await _categoriesService.GetListAsync();
+            _notifyService.Success("This is a Success Notification");
 
+            PaginationRequest request = new PaginationRequest
+            {
+                RecordsPerPage = RecordsPerPage ?? 15,
+                Page = Page ?? 1,
+                Filter = Filter
+            };
+            Response<PaginationResponse<Category>> response = await _categoriesService.GetListAsync(request);
             return View(response.Result);
         }
 

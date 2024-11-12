@@ -18,6 +18,7 @@ namespace BarberShop.Web.Core.Pagination
             RecordsPerPage = recordsPerPage;
             CurrentPage = pageNumber;
             TotalPages = (int)Math.Ceiling(count / (double)recordsPerPage);
+            AddRange(items);
         }
 
         public static async Task<PagedList<T>> ToPagedListAsync(IQueryable<T> query, PaginationRequest request)

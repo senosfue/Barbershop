@@ -1,4 +1,6 @@
-﻿using BarberShop.Web.Core;
+﻿using Azure.Core;
+using BarberShop.Web.Core;
+using BarberShop.Web.Core.Pagination;
 using BarberShop.Web.Data;
 using BarberShop.Web.Data.Entities;
 using BarberShop.Web.Helpers;
@@ -13,7 +15,7 @@ namespace BarberShop.Web.Services
         public Task<Response<Category>> CreateAsync(Category model);
         public Task<Response<Category>> DeleteAsyn(int id);
         public Task<Response<Category>> EditAsyn(Category model);
-        public Task<Response<List<Category>>> GetListAsync();
+        public Task<Response<PaginationResponse<Category>>> GetListAsync(PaginationRequest request);
         public Task<Response<Category>> GetOneAsync(int id);
 
 
@@ -91,21 +93,37 @@ namespace BarberShop.Web.Services
             }
         }
 
-        public async Task<Response<List<Category>>> GetListAsync()
+        public async Task<Response<PaginationResponse<Category>>> GetListAsync(PaginationRequest request)
         {
 
             try
             {
-                List<Category> categories = await _context.Categories.ToListAsync();
 
+                IQueryable<Category> query = _context.Categories.AsQueryable().Include(b => b.CategoryName);
 
+                if (!string.IsNullOrWhiteSpace(request.Filter))
+                {
+                    query = query.Where(s => s.CategoryName.ToLower().Contains(request.Filter.ToLower()));
+                }
 
-                return ResponseHelper<List<Category>>.MakeResponseSuccess(categories);
+                PagedList<Category> list = await PagedList<Category>.ToPagedListAsync(query, request);
+
+                PaginationResponse<Category> result = new PaginationResponse<Category>
+                {
+                    List = list,
+                    TotalCount = list.TotalCount,
+                    RecordsPerPage = list.RecordsPerPage,
+                    CurrentPage = list.CurrentPage,
+                    TotalPages = list.TotalPages,
+                    Filter = request.Filter
+                };
+
+                return ResponseHelper<PaginationResponse<Category>>.MakeResponseSuccess(result, "Categorias obtenidos con exito.");
 
             }
             catch (Exception ex)
             {
-                return ResponseHelper<List<Category>>.MakeResponseFail(ex);
+                return ResponseHelper<PaginationResponse<Category>>.MakeResponseFail(ex);
 
             }
         }
