@@ -4,11 +4,14 @@ using BarberShop.Web.Core.Pagination;
 using BarberShop.Web.Data.Entities;
 using BarberShop.Web.Helpers;
 using BarberShop.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static System.Collections.Specialized.BitVector32;
 
 namespace BarberShop.Web.Controllers
 {
+    [Authorize]
+    //[AllowAnonymous] para excluir uno 
     public class CategoriesController : Controller
     {
 

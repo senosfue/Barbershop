@@ -6,6 +6,7 @@ namespace BarberShop.Web.Helpers
 {
     public interface ICombosHelper
     {
+
         public Task<IEnumerable<SelectListItem>> GetCombosCategory();
     }
     public class CombosHelper : ICombosHelper
