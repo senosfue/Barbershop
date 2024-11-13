@@ -13,7 +13,7 @@
         public int Page
         {
             get => _page;
-            set => _page = value > 0 ? value :_page ;
+            set => _page = value > 0 ? value : _page ;
         }
 
         public int RecordsPerPage 

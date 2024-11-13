@@ -99,7 +99,7 @@ namespace BarberShop.Web.Services
             try
             {
 
-                IQueryable<Category> query = _context.Categories.AsQueryable().Include(b => b.CategoryName);
+                IQueryable<Category> query = _context.Categories.AsQueryable();
 
                 if (!string.IsNullOrWhiteSpace(request.Filter))
                 {

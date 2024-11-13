@@ -95,61 +95,60 @@
             </table>
 
             <nav aria-label="">
-                <ul> class="pagination justify-content-center">
+                <ul class="pagination justify-content-center">
 
                     @* Primero *@
-                    <li>class="page-item">
+                    <li class="page-item">
                         <a class="page-link @(Model.CurrentPage == 1 ? "disabled" : "")"
                            asp-action="Index"
-                           asp-route-asp-page="1"
+                           asp-route-page="1"
                            asp-route-Filter="@Model.Filter"
                            asp-route-RecordsPerPage="@Model.RecordsPerPage">
                             &laquo;
-                       </a>
+                        </a>
                     </li>
 
                     @* Anterior *@
-                    <li>
-                        class="page-item">
+                    <li class="page-item">
                         <a class="page-link @(!Model.HasPrevious ? "disabled" : "")"
                            asp-action="Index"
-                           asp-route-asp-page="(Model.CurrentPage - 1)"
+                           asp-route-page="@(Model.CurrentPage - 1)"
                            asp-route-Filter="@Model.Filter"
                            asp-route-RecordsPerPage="@Model.RecordsPerPage">
                             &lsaquo;
                         </a>
                     </li>
-                    @* Páginas*@
+
+                    @* Páginas *@
                     @foreach (int page in Model.Pages)
                     {
-                        <li>
-                            class="page-item">
+                        <li class="page-item">
                             <a class="page-link @(Model.CurrentPage == page ? "disabled" : "")"
                                asp-action="Index"
-                               asp-route-asp-page="@(page)"
+                               asp-route-page="@(page)"
                                asp-route-Filter="@Model.Filter"
                                asp-route-RecordsPerPage="@Model.RecordsPerPage">
                                 @(page)
                             </a>
                         </li>
                     }
+
                     @* Siguiente *@
-                    <li>
-                        class="page-item">
+                    <li class="page-item">
                         <a class="page-link @(!Model.HasNext ? "disabled" : "")"
                            asp-action="Index"
-                           asp-route-asp-page="(Model.CurrentPage + 1)"
+                           asp-route-page="@(Model.CurrentPage + 1)"
                            asp-route-Filter="@Model.Filter"
                            asp-route-RecordsPerPage="@Model.RecordsPerPage">
                             &rsaquo;
                         </a>
                     </li>
+
                     @* Último *@
-                    <li>
-                        class="page-item">
+                    <li class="page-item">
                         <a class="page-link @(Model.TotalPages == Model.CurrentPage ? "disabled" : "")"
                            asp-action="Index"
-                           asp-route-asp-page="(Model.TotalPages)"
+                           asp-route-page="@(Model.TotalPages)"
                            asp-route-Filter="@Model.Filter"
                            asp-route-RecordsPerPage="@Model.RecordsPerPage">
                             &raquo;
@@ -157,10 +156,12 @@
                     </li>
                 </ul>
             </nav>
-
         </div>
     </div>
+
+
 </section>
+
 
 @section Scripts {
 
