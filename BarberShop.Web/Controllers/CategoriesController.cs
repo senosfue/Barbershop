@@ -10,7 +10,7 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace BarberShop.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     //[AllowAnonymous] para excluir uno 
     public class CategoriesController : Controller
     {
@@ -43,7 +43,7 @@ namespace BarberShop.Web.Controllers
         }
 
         [HttpGet]
-
+        [Authorize]
         public IActionResult Create()
         {
 
@@ -51,6 +51,7 @@ namespace BarberShop.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(Category category)
         {
 
@@ -87,6 +88,7 @@ namespace BarberShop.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit([FromRoute] int id)
         {
             Response<Category> response = await _categoriesService.GetOneAsync(id);
@@ -100,6 +102,7 @@ namespace BarberShop.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(Category category)
         {
             try
@@ -128,6 +131,7 @@ namespace BarberShop.Web.Controllers
             }
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             Response<Category> response = await _categoriesService.DeleteAsyn(id);
