@@ -24,12 +24,15 @@ namespace BarberShop.Web
                 configuration.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection"));
 
             });
+
+            builder.Services.AddHttpContextAccessor();
             // Services
             AddServices(builder);
 
-            // Identity and Acces Managment
+            // IAM: Identity and Acces Managment
 
             AddIAM(builder);
+            //PAM: Privileged access Management
 
             //Toast Notification
             builder.Services.AddNotyf(config =>
@@ -71,6 +74,7 @@ namespace BarberShop.Web
         {
             //services
             builder.Services.AddScoped<IHaircutServices, HaircutServices>();
+            builder.Services.AddScoped<IRolesService,RolesService>();
             builder.Services.AddScoped<ICategoriesService, CategoriesService>();
             builder.Services.AddTransient<SeedDb>();
             builder.Services.AddScoped<IUsersServices, UsersServices>();

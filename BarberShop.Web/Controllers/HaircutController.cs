@@ -6,6 +6,7 @@ using BarberShop.Web.DTOs;
 using BarberShop.Web.Helpers;
 using BarberShop.Web.Services;
 using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,7 @@ namespace BarberShop.Web.Controllers
             return View(response.Result);
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             HaircutDTO dto = new HaircutDTO
@@ -55,6 +57,7 @@ namespace BarberShop.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(HaircutDTO dto)
         {   
                 if (!ModelState.IsValid)
@@ -77,6 +80,7 @@ namespace BarberShop.Web.Controllers
 
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit([FromRoute]int id)
         {
             Response<Haircut> response = await _haircutServices.GetOneAsync(id);
@@ -98,6 +102,7 @@ namespace BarberShop.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(HaircutDTO dto)
         {
             try
@@ -136,6 +141,7 @@ namespace BarberShop.Web.Controllers
             }
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             Response<Haircut> response = await _haircutServices.DeleteAsyn(id);

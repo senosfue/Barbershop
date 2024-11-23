@@ -1,18 +1,21 @@
-﻿using BarberShop.Web.Data.Entities;
+﻿using BarberShop.Web.Data;
+using BarberShop.Web.Data.Entities;
 using BarberShop.Web.DTOs;
-using System.Reflection.Metadata;
-
+using Microsoft.EntityFrameworkCore;
 namespace BarberShop.Web.Helpers
 {
     public interface IConverterHelper
     {
         public Haircut ToHaircut(HaircutDTO dto);
+        public BarberShopRole ToRole(BarberShopRoleDTO dto);
+        public Task<BarberShopRoleDTO> TORoleDTOAsync(BarberShopRole role);
         public User ToUser(UserDTO dto);
         public Task<UserDTO> ToUserDTOAsync(User user, bool isNew = true);
     }
     public class ConverterHelper : IConverterHelper
     {
         private readonly ICombosHelper? _combosHelper;
+        private readonly DataContext _context;
         public Haircut ToHaircut(HaircutDTO dto)
         {
             return new Haircut
@@ -21,6 +24,35 @@ namespace BarberShop.Web.Helpers
                 Id = dto.Id,
                 Rating = dto.Rating,
                 IdCategory = dto.IdCategory,
+            };
+        }
+
+        public BarberShopRole ToRole(BarberShopRoleDTO dto)
+        {
+            return new BarberShopRole
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+            };
+        }
+
+        public async Task<BarberShopRoleDTO> TORoleDTOAsync(BarberShopRole role)
+        {
+            List<PermissionForDTO> permissions = await _context.Permissions.Select(p => new PermissionForDTO
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Module = p.Module,
+                Selected = _context.RolePermissions.Any(rp => rp.PermissionId == p.Id && rp.RoleId == role.Id),
+
+            }).ToListAsync();
+
+            return new BarberShopRoleDTO
+            {
+                Id = role.Id,
+                Name = role.Name,
+                Permissions = permissions,
             };
         }
 
@@ -42,16 +74,17 @@ namespace BarberShop.Web.Helpers
         
        public async Task<UserDTO> ToUserDTOAsync(User user, bool isNew = true)
        {
-                return new UserDTO
-                {
-                    id = isNew ? Guid.NewGuid() : Guid.Parse(user.Id),
-                    Document = user.Document,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    BarberShopRoles = await _combosHelper.GetCombosBarberShopRolesAsync(),
-                    BarberShopRoleId = user.BarberShopRoleId,
-                    PhoneNumber = user.PhoneNumber,
+            return new UserDTO
+            {
+                id = isNew ? Guid.NewGuid() : Guid.Parse(user.Id),
+                Document = user.Document,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                BarberShopRoles = await _combosHelper.GetCombosBarberShopRolesAsync(),
+                BarberShopRoleId = user.BarberShopRoleId,
+                PhoneNumber = user.PhoneNumber,
+
                 };
        }
         
