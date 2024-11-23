@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using BarberShop.Web.Core;
+using BarberShop.Web.Core.Attributes;
 using BarberShop.Web.Core.Pagination;
 using BarberShop.Web.Data.Entities;
 using BarberShop.Web.Helpers;
@@ -10,8 +11,7 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace BarberShop.Web.Controllers
 {
-    [Authorize]
-    //[AllowAnonymous] para excluir uno 
+
     public class CategoriesController : Controller
     {
 
@@ -26,6 +26,7 @@ namespace BarberShop.Web.Controllers
 
 
         [HttpGet]
+        [CustomAuthorize(permission: "showCategories", module: "Categorias")]
         public async Task<IActionResult> Index([FromQuery] int? RecordsPerPage,
                                               [FromQuery] int? Page,
                                               [FromQuery] string? Filter)
@@ -44,6 +45,8 @@ namespace BarberShop.Web.Controllers
 
         [HttpGet]
 
+        [CustomAuthorize(permission: "createCategories", module: "Categorias")]
+
         public IActionResult Create()
         {
 
@@ -51,6 +54,9 @@ namespace BarberShop.Web.Controllers
         }
 
         [HttpPost]
+
+        [CustomAuthorize(permission: "createCategories", module: "Categorias")]
+
         public async Task<IActionResult> Create(Category category)
         {
 
@@ -87,6 +93,9 @@ namespace BarberShop.Web.Controllers
         }
 
         [HttpGet]
+
+        [CustomAuthorize(permission: "editCategories", module: "Categorias")]
+
         public async Task<IActionResult> Edit([FromRoute] int id)
         {
             Response<Category> response = await _categoriesService.GetOneAsync(id);
@@ -100,6 +109,9 @@ namespace BarberShop.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
+
+        [CustomAuthorize(permission: "editCategories", module: "Categorias")]
+
         public async Task<IActionResult> Edit(Category category)
         {
             try
@@ -128,6 +140,9 @@ namespace BarberShop.Web.Controllers
             }
         }
         [HttpPost]
+
+        [CustomAuthorize(permission: "deleteCategories", module: "Categorias")]
+
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             Response<Category> response = await _categoriesService.DeleteAsyn(id);

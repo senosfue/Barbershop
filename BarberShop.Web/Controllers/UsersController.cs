@@ -5,12 +5,14 @@ using BarberShop.Web.Data.Entities;
 using BarberShop.Web.DTOs;
 using BarberShop.Web.Helpers;
 using BarberShop.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static System.Collections.Specialized.BitVector32;
 
 
 namespace BarberShop.Web.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly ICombosHelper _combosHelper;

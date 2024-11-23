@@ -1,8 +1,6 @@
 ﻿using BarberShop.Web.Data.Entities;
 using BarberShop.Web.Data;
 using Microsoft.EntityFrameworkCore;
-using BarberShop.Web.Data.Entities;
-using static System.Collections.Specialized.BitVector32;
 
 namespace BarberShop.Web.Data.Seeders
 {
@@ -17,7 +15,7 @@ namespace BarberShop.Web.Data.Seeders
 
         public async Task SeedAsync()
         {
-            List<Permission> permissions = [.. Haircuts(), .. Categories()];
+            List<Permission> permissions = [.. Haircuts(), .. Categories(), .. Users(), .. Roles()];
 
             foreach (Permission permission in permissions)
             {
@@ -37,10 +35,10 @@ namespace BarberShop.Web.Data.Seeders
         {
             return new List<Permission>
             {
-                new Permission { Name = "showHaricuts", Description = "Ver Haricuts", Module = "Haricuts" },
-                new Permission { Name = "createHaricuts", Description = "Crear Haricuts", Module = "Haricuts" },
-                new Permission { Name = "editHaricuts", Description = "Editar Haricuts", Module = "Haricuts" },
-                new Permission { Name = "deleteHaricuts", Description = "Eliminar Haricuts", Module = "Haricuts" },
+                new Permission { Name = "showHaricuts", Description = "Ver Cortes de pelos", Module = "Cortes de pelos" },
+                new Permission { Name = "createHaricuts", Description = "Crear Cortes de pelos", Module = "Cortes de pelos" },
+                new Permission { Name = "updateHaricuts", Description = "Editar Cortes de pelos", Module = "Cortes de pelos" },
+                new Permission { Name = "deleteHaricuts", Description = "Eliminar Cortes de pelos", Module = "Cortes de pelos" },
             };
         }
 
@@ -48,10 +46,30 @@ namespace BarberShop.Web.Data.Seeders
         {
             return new List<Permission>
             {
-                new Permission { Name = "showCategories", Description = "Ver Categories", Module = "Categories" },
-                new Permission { Name = "createCategories", Description = "Crear Categories", Module = "Categories" },
-                new Permission { Name = "editCategories", Description = "Editar Categories", Module = "Categories" },
-                new Permission { Name = "deleteCategories", Description = "Eliminar Categories", Module = "Categories" },
+                new Permission { Name = "showCategories", Description = "Ver Categorias", Module = "Categorias" },
+                new Permission { Name = "createCategories", Description = "Crear Categorias", Module = "Categorias" },
+                new Permission { Name = "updateCategories", Description = "Editar Categorias", Module = "Categorias" },
+                new Permission { Name = "deleteCategories", Description = "Eliminar Categorias", Module = "Categorias" },
+            };
+        }
+        private List<Permission> Users()
+        {
+            return new List<Permission>
+            {
+                new Permission { Name = "showUsers", Description = "Ver Usuarios", Module = "Usuarios" },
+                new Permission { Name = "createUsers", Description = "Crear Usuarios", Module = "Usuarios" },
+                new Permission { Name = "updateUsers", Description = "Editar Usuarios", Module = "Usuarios" },
+                new Permission { Name = "deleteUsers", Description = "Eliminar Usuarios", Module = "Usuarios" },
+            };
+        }
+        private List<Permission> Roles()
+        {
+            return new List<Permission>
+            {
+                new Permission { Name = "showRoles", Description = "Ver Roles", Module = "Roles" },
+                new Permission { Name = "createRoles", Description = "Crear Roles", Module = "Roles" },
+                new Permission { Name = "updateRoles", Description = "Editar Roles", Module = "Roles" },
+                new Permission { Name = "deleteRoles", Description = "Eliminar Roles", Module = "Roles" },
             };
         }
     }

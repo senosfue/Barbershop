@@ -6,7 +6,7 @@ using BarberShop.Web.DTOs;
 using BarberShop.Web.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Specialized;
+using ClaimsUser = System.Security.Claims.ClaimsPrincipal;
 
 namespace BarberShop.Web.Services
 {
@@ -14,15 +14,13 @@ namespace BarberShop.Web.Services
     {
         public Task<IdentityResult> AddUserAsync(User user, string password);
         public Task<IdentityResult> ConfirmEmailAsync(User user, string token);
-        Task<Response<User>> CreateAsyn(UserDTO dto);
+        public Task<Response<User>> CreateAsyn(UserDTO dto);
+        public Task<bool> CurrentUserIsAuthorizedAsync(string permission, string module);
         public Task<string> GenerateEmailConfirmationTokenAsync(User user);
         public Task<Response<PaginationResponse<User>>> GetListAsync(PaginationRequest request);
         public Task<User> GetUserAsync(string email);
         public Task<SignInResult> LoginAsync(LoginDTO dto);
         public Task LogoutAsync();
-
-
-
 
     }
     public class UsersServices : IUsersServices
@@ -32,12 +30,14 @@ namespace BarberShop.Web.Services
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly IConverterHelper _converterHelper;
-        public UsersServices(DataContext context, SignInManager<User> signInManager, UserManager<User> userManager, IConverterHelper converterHelper)
+        private  IHttpContextAccessor _httpContextAccessor;
+        public UsersServices(DataContext context, SignInManager<User> signInManager, UserManager<User> userManager, IConverterHelper converterHelper, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _signInManager = signInManager;
             _userManager = userManager;
             _converterHelper = converterHelper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IdentityResult> AddUserAsync(User user, string password)
@@ -70,6 +70,31 @@ namespace BarberShop.Web.Services
             {
                 return ResponseHelper<User>.MakeResponseFail(ex);
             }
+        }
+
+        public async Task<bool> CurrentUserIsAuthorizedAsync(string permission, string module)
+        {
+            ClaimsUser? claimuser = _httpContextAccessor.HttpContext?.User;
+            //valida si hay session
+            if (claimuser is null) 
+            {
+                return false;
+            }
+            string? userName = claimuser.Identity.Name;
+
+            User? user = await GetUserAsync(userName);
+            if (user is null) 
+            {
+                return false;
+            }
+            if (user.BarberShopRole.Name == Env.SUPER_ADMIN_ROLE_NAME)
+            {
+                return true;
+            }
+
+            return await _context.Permissions.Include(p => p.RolePermissions)
+                                             .AnyAsync(p => (p.Module == module && p.Name == permission) 
+                                             && p.RolePermissions.Any(rp => rp.RoleId == user.BarberShopRoleId));
         }
 
         public  async Task<string> GenerateEmailConfirmationTokenAsync(User user)
@@ -118,6 +143,15 @@ namespace BarberShop.Web.Services
 
             return user;
         }
+
+
+        public async Task<User> GetUserAsync(Guid id)
+        {
+           
+            return await _context.Users.Include(u => u.BarberShopRole).FirstOrDefaultAsync(u => u.Id == id.ToString());
+
+        }
+
 
         public async Task<SignInResult> LoginAsync(LoginDTO dto)
         {

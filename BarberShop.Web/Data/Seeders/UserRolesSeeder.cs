@@ -90,6 +90,14 @@ namespace BarberShop.Web.Data.Seeders
             {
                 BarberShopRole role = new BarberShopRole { Name = "Gestor de usuarios" };
                 await _context.BarberShopRoles.AddAsync(role);
+
+                List<Permission> permissions = await _context.Permissions.Where(p => p.Module == "Usuarios").ToListAsync();
+                
+                foreach (Permission permission in permissions)
+                {
+                    await _context.RolePermissions.AddAsync(new RolePermission { PermissionId = permission.Id, Role = role });
+                }
+
                 await _context.SaveChangesAsync();
             }
         }
@@ -102,6 +110,14 @@ namespace BarberShop.Web.Data.Seeders
             {
                 BarberShopRole role = new BarberShopRole { Name = "Gestor de contenido" };
                 await _context.BarberShopRoles.AddAsync(role);
+
+                List<Permission> permissions = await _context.Permissions.Where(p => p.Module == "Categorias" || p.Module == "Cortes de pelos").ToListAsync();
+
+                foreach (Permission permission in permissions)
+                {
+                    await _context.RolePermissions.AddAsync(new RolePermission { PermissionId = permission.Id, Role = role });
+                }
+
                 await _context.SaveChangesAsync();
             }
         }
