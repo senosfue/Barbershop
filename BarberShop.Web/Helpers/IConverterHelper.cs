@@ -16,6 +16,13 @@ namespace BarberShop.Web.Helpers
     {
         private readonly ICombosHelper? _combosHelper;
         private readonly DataContext _context;
+
+        public ConverterHelper(ICombosHelper? combosHelper, DataContext context)
+        {
+            _combosHelper = combosHelper;
+            _context = context;
+        }
+
         public Haircut ToHaircut(HaircutDTO dto)
         {
             return new Haircut
@@ -74,18 +81,26 @@ namespace BarberShop.Web.Helpers
         
        public async Task<UserDTO> ToUserDTOAsync(User user, bool isNew = true)
        {
-            return new UserDTO
+            try
             {
-                id = isNew ? Guid.NewGuid() : Guid.Parse(user.Id),
-                Document = user.Document,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                BarberShopRoles = await _combosHelper.GetCombosBarberShopRolesAsync(),
-                BarberShopRoleId = user.BarberShopRoleId,
-                PhoneNumber = user.PhoneNumber,
-
+                UserDTO dto = new UserDTO
+                {
+                    id = isNew ? Guid.NewGuid() : Guid.Parse(user.Id),
+                    Document = user.Document,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    BarberShopRoles = await _combosHelper.GetCombosBarberShopRolesAsync(),
+                    BarberShopRoleId = user.BarberShopRoleId,
+                    PhoneNumber = user.PhoneNumber,
                 };
+
+                return dto;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
        }
         
     }
