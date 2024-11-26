@@ -1,4 +1,4 @@
-﻿using BarberShop.Web.Data;
+using BarberShop.Web.Data;
 using BarberShop.Web.Data.Entities;
 using BarberShop.Web.DTOs;
 using Microsoft.EntityFrameworkCore;
@@ -10,19 +10,22 @@ namespace BarberShop.Web.Helpers
         public BarberShopRole ToRole(BarberShopRoleDTO dto);
         public Task<BarberShopRoleDTO> TORoleDTOAsync(BarberShopRole role);
         public User ToUser(UserDTO dto);
-        public Task<UserDTO> ToUserDTOAsync(User user, bool isNew = true);
     }
     public class ConverterHelper : IConverterHelper
     {
+
         private readonly ICombosHelper? _combosHelper;
         private readonly DataContext _context;
 
+<<<<<<< HEAD
         public ConverterHelper(ICombosHelper? combosHelper, DataContext context)
         {
             _combosHelper = combosHelper;
             _context = context;
         }
 
+=======
+>>>>>>> origin/main
         public Haircut ToHaircut(HaircutDTO dto)
         {
             return new Haircut
@@ -77,6 +80,7 @@ namespace BarberShop.Web.Helpers
                 PhoneNumber = dto.PhoneNumber,
             };
         }
+
 
         
        public async Task<UserDTO> ToUserDTOAsync(User user, bool isNew = true)
