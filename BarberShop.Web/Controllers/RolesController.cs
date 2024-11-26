@@ -88,9 +88,9 @@ namespace BarberShop.Web.Controllers
             }
 
             Response<BarberShopRole> createResponse = await _rolesService.CreateAsync(dto);
-            if (!createResponse.IsSuccess)
+            if (createResponse.IsSuccess)
             {
-                _notifyService.Error(createResponse.Message);
+                _notifyService.Success(createResponse.Message);
                 return RedirectToAction(nameof(Index));
             }
             _notifyService.Error(createResponse.Message);
