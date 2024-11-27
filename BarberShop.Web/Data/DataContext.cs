@@ -21,6 +21,7 @@ namespace BarberShop.Web.Data
         public DbSet<RolePermission> RolePermissions { get; set; }
 
         public DbSet<Haircut> Haircuts { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

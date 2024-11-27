@@ -22,6 +22,30 @@ namespace BarberShop.Web.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BarberShop.Web.Data.Entities.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("HaircutId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdHaircut")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HaircutId");
+
+                    b.ToTable("Appointments");
+                });
+
             modelBuilder.Entity("BarberShop.Web.Data.Entities.BarberShopRole", b =>
                 {
                     b.Property<int>("Id")
@@ -362,6 +386,17 @@ namespace BarberShop.Web.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("BarberShop.Web.Data.Entities.Appointment", b =>
+                {
+                    b.HasOne("BarberShop.Web.Data.Entities.Haircut", "Haircut")
+                        .WithMany()
+                        .HasForeignKey("HaircutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Haircut");
                 });
 
             modelBuilder.Entity("BarberShop.Web.Data.Entities.Haircut", b =>

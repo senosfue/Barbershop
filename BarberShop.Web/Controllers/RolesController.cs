@@ -41,7 +41,7 @@ namespace BarberShop.Web.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorize(permission: "showRoles", module: "Roles")]
+        [CustomAuthorize(permission: "createRoles", module: "Roles")]
         public async Task<IActionResult> Create()
         {
             Response<IEnumerable<Permission>> response = await _rolesService.GetPermissionsAsync();

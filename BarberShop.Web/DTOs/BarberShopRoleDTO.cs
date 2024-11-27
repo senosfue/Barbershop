@@ -14,6 +14,7 @@ namespace BarberShop.Web.DTOs
         public string Name { get; set; } = null!;
 
         public List<PermissionForDTO>? Permissions {    get; set; }
+        
         public string? PermissionIds { get; set; }
 
     }

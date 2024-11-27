@@ -9,6 +9,7 @@ namespace BarberShop.Web.Helpers
     {
         Task<IEnumerable<SelectListItem>> GetCombosBarberShopRolesAsync();
         public Task<IEnumerable<SelectListItem>> GetCombosCategory();
+        public Task<IEnumerable<SelectListItem>> GetCombosHaircut();
     }
     public class CombosHelper : ICombosHelper
     {
@@ -46,9 +47,26 @@ namespace BarberShop.Web.Helpers
           
             list.Insert(0, new SelectListItem
             {
-                Text = "[seleccione una seccion]",
+                Text = "[seleccione una categoria]",
                 Value = "0",
             
+            });
+            return list;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetCombosHaircut()
+        {
+            List<SelectListItem> list = await _context.Haircuts.Select(s => new SelectListItem
+            {
+                Text = s.Name,
+                Value = s.Id.ToString(),
+            }).ToListAsync();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[seleccione un corte]",
+                Value = "0",
+
             });
             return list;
         }

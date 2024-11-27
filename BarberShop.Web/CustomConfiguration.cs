@@ -74,6 +74,7 @@ namespace BarberShop.Web
         {
             //services
             builder.Services.AddScoped<IHaircutServices, HaircutServices>();
+            builder.Services.AddScoped<IAppointmentServices, AppointmentServices>();
             builder.Services.AddScoped<IRolesService,RolesService>();
             builder.Services.AddScoped<ICategoriesService, CategoriesService>();
             builder.Services.AddTransient<SeedDb>();

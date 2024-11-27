@@ -1,16 +1,16 @@
-﻿@model PaginationResponse<Haircut>
+﻿@model PaginationResponse<Appointment>
 @inject BarberShop.Web.Services.IUsersServices _usersService
 
 @{
-    ViewData["Title"] = "corte de pelo";
+    ViewData["Title"] = "Cita";
 }
 
 <div class="pagetitle">
-    <h1>Haircut</h1>
+    <h1>Appointment</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
-            <li class="breadcrumb-item active">Haircut</li>
+            <li class="breadcrumb-item active">Appointment</li>
         </ol>
     </nav>
 </div>
@@ -24,9 +24,9 @@
 
             <div class="row">
 
-                <h3 class="m-2 font-weight-bold col-md-11" style="font-family: 'Roboto', sans-serif; color: #000000; font-style: italic; padding: 10px">Cortes</h3>
+                <h3 class="m-2 font-weight-bold col-md-11" style="font-family: 'Roboto', sans-serif; color: #000000; font-style: italic; padding: 10px">Citas</h3>
 
-                @if (await _usersService.CurrentUserIsAuthorizedAsync("createHaricuts", "Cortes de pelos"))
+                @if (await _usersService.CurrentUserIsAuthorizedAsync("createAppointments", "Appointments"))
                 {
                     <div class="col-md-1">
                         <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-square-fill"></i></a>
@@ -47,55 +47,57 @@
                 <div class="input<group mb-3">
 
                     <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar..." aria-label="Search" asp-form="@Model.Filter" name="Filter" />
-                    
+
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type= "submit">
+                        <button class="btn btn-primary" type="submit">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
                 </div>
-            
+
             </form>
-            <h5 class="card-title">Tabla De Cortes</h5>
+            <h5 class="card-title">Tabla De Citas</h5>
 
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Rating</th>
-                        <th scope="col">IdCategory</th>
+                        <th scope="col">Time</th>
+                        
+                        <th scope="col">IdHaircut</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    @foreach (Haircut item in Model.List)
+                    @foreach (Appointment item in Model.List)
                     {
                         <tr>
                             <td>@item.Id</td>
-                            <td>@item.Name</td>
-                            <td>@item.Rating</td>
-                            <td>@item.IdCategory<td>
+                            <td>@item.Time</td>
+                            
+                            <td>@item.IdHaircut
+                            <td>
                             <td>
 
+                             
                                 <div class="d-flex">
-                                            @if (await _usersService.CurrentUserIsAuthorizedAsync("updateHaricuts", "Cortes de pelos"))
+                                            @if (await _usersService.CurrentUserIsAuthorizedAsync("updateAppointments", "Appointments"))
                                             {
-                                        <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-dark btn-sm me-2">
-                                            <i class="bi bi-brush-fill"></i> Editar
-                                        </a>
+                                                <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-dark btn-sm me-2">
+                                                    <i class="bi bi-brush-fill"></i> Editar
+                                                </a>
                                             }
-                                            @if (await _usersService.CurrentUserIsAuthorizedAsync("deleteHaricuts", "Cortes de pelos"))
+                                            @if (await _usersService.CurrentUserIsAuthorizedAsync("deleteAppointments", "Appointments"))
                                             {
-                                        <form asp-action="Delete" asp-route-Id="@item.Id" method="post" class="m-0">
-                                            <button type="submit" class="btn btn-danger btn-sm btnDelete">
-                                                <i class="bi bi-trash2-fill"></i> Eliminar
-                                            </button>
-                                        </form>
+                                                <form asp-action="Delete" asp-route-Id="@item.Id" method="post" class="m-0">
+                                                    <button type="submit" class="btn btn-danger btn-sm btnDelete">
+                                                        <i class="bi bi-trash2-fill"></i> Eliminar
+                                                    </button>
+                                                </form>
                                             }
                                 </div>
-                                                      
+
                             </td>
                         </tr>
                     }

@@ -15,7 +15,7 @@ namespace BarberShop.Web.Data.Seeders
 
         public async Task SeedAsync()
         {
-            List<Permission> permissions = [.. Haircuts(), .. Categories(), .. Users(), .. Roles()];
+            List<Permission> permissions = [.. Haircuts(), .. Categories(),.. Appointments(), .. Users(), .. Roles()];
 
             foreach (Permission permission in permissions)
             {
@@ -50,6 +50,16 @@ namespace BarberShop.Web.Data.Seeders
                 new Permission { Name = "createCategories", Description = "Crear Categorias", Module = "Categorias" },
                 new Permission { Name = "updateCategories", Description = "Editar Categorias", Module = "Categorias" },
                 new Permission { Name = "deleteCategories", Description = "Eliminar Categorias", Module = "Categorias" },
+            };
+        }
+        private List<Permission> Appointments()
+        {
+            return new List<Permission>
+            {
+                new Permission { Name = "showAppointments", Description = "Ver Appointments", Module = "Appointments" },
+                new Permission { Name = "createAppointments", Description = "Crear Appointments", Module = "Appointments" },
+                new Permission { Name = "updateAppointments", Description = "Editar Appointments", Module = "Appointments" },
+                new Permission { Name = "deleteAppointments", Description = "Eliminar Appointments", Module = "Appointments" },
             };
         }
         private List<Permission> Users()

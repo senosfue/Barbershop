@@ -7,6 +7,7 @@ namespace BarberShop.Web.Helpers
     public interface IConverterHelper
     {
         public Haircut ToHaircut(HaircutDTO dto);
+        public Appointment ToAppointment(AppointmentDTO dto);
         public BarberShopRole ToRole(BarberShopRoleDTO dto);
         public Task<BarberShopRoleDTO> TORoleDTOAsync(BarberShopRole role);
         public User ToUser(UserDTO dto);
@@ -17,15 +18,14 @@ namespace BarberShop.Web.Helpers
         private readonly ICombosHelper? _combosHelper;
         private readonly DataContext _context;
 
-<<<<<<< HEAD
+
         public ConverterHelper(ICombosHelper? combosHelper, DataContext context)
         {
             _combosHelper = combosHelper;
             _context = context;
         }
 
-=======
->>>>>>> origin/main
+
         public Haircut ToHaircut(HaircutDTO dto)
         {
             return new Haircut
@@ -34,6 +34,17 @@ namespace BarberShop.Web.Helpers
                 Id = dto.Id,
                 Rating = dto.Rating,
                 IdCategory = dto.IdCategory,
+            };
+        }
+
+        public Appointment ToAppointment(AppointmentDTO dto)
+        {
+            return new Appointment
+            {
+                Time = dto.Time,
+                Id = dto.Id,
+                
+                IdHaircut = dto.IdHaircut,
             };
         }
 

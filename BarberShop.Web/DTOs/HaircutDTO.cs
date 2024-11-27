@@ -16,9 +16,13 @@ namespace BarberShop.Web.DTOs
         [Display(Name = "Calificacion")]
         [Required(ErrorMessage = "Este campo '{0}' es obligatorio")]
         public int Rating { get; set; }
+
+
         [Display(Name = "Categoria")]
         [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar una categoria")]
         public Category? Category { get; set; }
+
+
 
         [Display(Name = "Categoría")]
         public int IdCategory { get; set; }

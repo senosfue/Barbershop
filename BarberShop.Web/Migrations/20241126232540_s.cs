@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BarberShop.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSquema : Migration
+    public partial class s : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -256,6 +256,32 @@ namespace BarberShop.Web.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Time = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HaircutId = table.Column<int>(type: "int", nullable: false),
+                    IdHaircut = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Haircuts_HaircutId",
+                        column: x => x.HaircutId,
+                        principalTable: "Haircuts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_HaircutId",
+                table: "Appointments",
+                column: "HaircutId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -327,6 +353,9 @@ namespace BarberShop.Web.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Appointments");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -342,10 +371,10 @@ namespace BarberShop.Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Haircuts");
+                name: "RolePermissions");
 
             migrationBuilder.DropTable(
-                name: "RolePermissions");
+                name: "Haircuts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -354,10 +383,10 @@ namespace BarberShop.Web.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Permissions");
 
             migrationBuilder.DropTable(
-                name: "Permissions");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "BarberShopRoles");
