@@ -56,10 +56,10 @@ namespace BarberShop.Web.Data.Seeders
         {
             return new List<Permission>
             {
-                new Permission { Name = "showAppointments", Description = "Ver Appointments", Module = "Appointments" },
-                new Permission { Name = "createAppointments", Description = "Crear Appointments", Module = "Appointments" },
-                new Permission { Name = "updateAppointments", Description = "Editar Appointments", Module = "Appointments" },
-                new Permission { Name = "deleteAppointments", Description = "Eliminar Appointments", Module = "Appointments" },
+                new Permission { Name = "showAppointments", Description = "Ver Cita", Module = "Cita" },
+                new Permission { Name = "createAppointments", Description = "Crear Cita", Module = "Cita" },
+                new Permission { Name = "updateAppointments", Description = "Editar Cita", Module = "Cita" },
+                new Permission { Name = "deleteAppointments", Description = "Eliminar Cita", Module = "Cita" },
             };
         }
         private List<Permission> Users()

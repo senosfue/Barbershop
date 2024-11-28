@@ -2,15 +2,15 @@
 @inject BarberShop.Web.Services.IUsersServices _usersService
 
 @{
-    ViewData["Title"] = "corte de pelo";
+    ViewData["Title"] = "Cortes";
 }
 
 <div class="pagetitle">
-    <h1>Haircut</h1>
+    <h1>Cortes</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
-            <li class="breadcrumb-item active">Haircut</li>
+            <li class="breadcrumb-item active">Cortes</li>
         </ol>
     </nav>
 </div>
@@ -29,7 +29,7 @@
                 @if (await _usersService.CurrentUserIsAuthorizedAsync("createHaricuts", "Cortes de pelos"))
                 {
                     <div class="col-md-1">
-                        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-square-fill"></i></a>
+                        <a asp-action="Create" class="btn bg-danger text-white"><i class="bi bi-plus-square-fill"></i></a>
                     </div>
                 }
 
@@ -44,16 +44,17 @@
                 <input type="hidden" name="Page" value="@Model.CurrentPage" />
                 <input type="hidden" name="RecordsPerPage" value="@Model.RecordsPerPage" />
 
-                <div class="input<group mb-3">
+                <div class="input-group mb-3">
 
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar..." aria-label="Search" asp-form="@Model.Filter" name="Filter" />
-                    
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar.." aria-label="Search" asp-for="@Model.Filter" name="Filter">
+
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type= "submit">
+                        <button class="btn bg-danger text-white" type="submit">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
                 </div>
+
             
             </form>
             <h5 class="card-title">Tabla De Cortes</h5>

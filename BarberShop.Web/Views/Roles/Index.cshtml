@@ -6,7 +6,7 @@
 }
 
 <div class="pagetitle">
-    <h1>Dashboard</h1>
+    <h1>Roles</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Dashboard">Dashboard</a></li>
@@ -21,12 +21,12 @@
 
         <div class="card-header py-3">
             <div class="row">
-                <h3 class="m-0 font-weight-bold text-primary col-md-11">Roles</h3>
+                <h3 class="m-2 font-weight-bold col-md-11" style="font-family: 'Roboto', sans-serif; color: #000000; font-style: italic; padding: 10px">Roles</h3>
 
                 @if (await _usersService.CurrentUserIsAuthorizedAsync("createRoles", "Roles"))
                 {
                     <div class="col-md-1">
-                        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
+                        <a asp-action="Create" class="btn bg-danger text-white"><i class="bi bi-plus-square-fill"></i></a>
                     </div>
                 }
 
@@ -44,7 +44,7 @@
                     <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar.." aria-label="Search" asp-for="@Model.Filter" name="Filter">
 
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn bg-danger text-white" type="submit">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
@@ -71,13 +71,13 @@
                                 {
                                     @if (await _usersService.CurrentUserIsAuthorizedAsync("updateRoles", "Roles"))
                                     {
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning"><i class="bi bi-pencil-fill"></i></a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-dark btn-sm me-2"><i class="bi bi-brush-fill"></i> Editar</a>
                                     }
 
                                     @if (await _usersService.CurrentUserIsAuthorizedAsync("deleteRoles", "Roles"))
                                     {
                                         <form asp-action="Delete" asp-route-id="@item.Id" style="display:contents">
-                                            <button class="btn btn-danger btn-sm btnDelete"><i class="bi bi-trash-fill"></i></button>
+                                            <button class="btn btn-danger btn-sm btnDelete"><i class="bi bi-trash2-fill"></i> Eliminar</button>
                                         </form>
                                     }
                                 }

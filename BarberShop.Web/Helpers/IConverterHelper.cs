@@ -11,6 +11,7 @@ namespace BarberShop.Web.Helpers
         public BarberShopRole ToRole(BarberShopRoleDTO dto);
         public Task<BarberShopRoleDTO> TORoleDTOAsync(BarberShopRole role);
         public User ToUser(UserDTO dto);
+        public Task<UserDTO> ToUserDTOAsync(User user, bool isNew = true);
     }
     public class ConverterHelper : IConverterHelper
     {
