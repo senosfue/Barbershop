@@ -12,6 +12,7 @@ namespace BarberShop.Web.Services
 {
     public interface IUsersServices
     {
+
         public Task<IdentityResult> AddUserAsync(User user, string password);
         public Task<IdentityResult> ConfirmEmailAsync(User user, string token);
         public Task<Response<User>> CreateAsyn(UserDTO dto);
@@ -19,8 +20,11 @@ namespace BarberShop.Web.Services
         public Task<string> GenerateEmailConfirmationTokenAsync(User user);
         public Task<Response<PaginationResponse<User>>> GetListAsync(PaginationRequest request);
         public Task<User> GetUserAsync(string email);
+        public Task<User> GetUserAsync(Guid id);
         public Task<SignInResult> LoginAsync(LoginDTO dto);
         public Task LogoutAsync();
+        public Task<IdentityResult> UpdateUserAsync(User user);
+        public Task<Response<User>> UpdateUserAsync(UserDTO dto);
 
     }
     public class UsersServices : IUsersServices
@@ -30,7 +34,7 @@ namespace BarberShop.Web.Services
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly IConverterHelper _converterHelper;
-        private  IHttpContextAccessor _httpContextAccessor;
+        private IHttpContextAccessor _httpContextAccessor;
         public UsersServices(DataContext context, SignInManager<User> signInManager, UserManager<User> userManager, IConverterHelper converterHelper, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -45,7 +49,7 @@ namespace BarberShop.Web.Services
             return await _userManager.CreateAsync(user, password);
         }
 
-        public  async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
         {
             return await _userManager.ConfirmEmailAsync(user, token);
         }
@@ -60,7 +64,7 @@ namespace BarberShop.Web.Services
 
                 IdentityResult result = await AddUserAsync(user, dto.Document);
 
-                
+
                 string token = await GenerateEmailConfirmationTokenAsync(user);
                 await ConfirmEmailAsync(user, token);
 
@@ -76,14 +80,14 @@ namespace BarberShop.Web.Services
         {
             ClaimsUser? claimuser = _httpContextAccessor.HttpContext?.User;
             //valida si hay session
-            if (claimuser is null) 
+            if (claimuser is null)
             {
                 return false;
             }
             string? userName = claimuser.Identity.Name;
 
             User? user = await GetUserAsync(userName);
-            if (user is null) 
+            if (user is null)
             {
                 return false;
             }
@@ -93,11 +97,11 @@ namespace BarberShop.Web.Services
             }
 
             return await _context.Permissions.Include(p => p.RolePermissions)
-                                             .AnyAsync(p => (p.Module == module && p.Name == permission) 
+                                             .AnyAsync(p => (p.Module == module && p.Name == permission)
                                              && p.RolePermissions.Any(rp => rp.RoleId == user.BarberShopRoleId));
         }
 
-        public  async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
         {
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
@@ -106,7 +110,7 @@ namespace BarberShop.Web.Services
         {
             try
             {
-                IQueryable<User> query = _context.Users.AsQueryable().Include(u=> u.BarberShopRole);
+                IQueryable<User> query = _context.Users.AsQueryable().Include(u => u.BarberShopRole);
                 if (!string.IsNullOrWhiteSpace(request.Filter))
                 {
                     query = query.Where(s => s.FirstName.ToLower().Contains(request.Filter.ToLower())
@@ -126,8 +130,8 @@ namespace BarberShop.Web.Services
                     TotalPages = list.TotalPages,
                     Filter = request.Filter,
                 };
-                
-              
+
+
                 return ResponseHelper<PaginationResponse<User>>.MakeResponseSuccess(result, "Haircuts obtenidos con exito.");
             }
             catch (Exception ex)
@@ -136,7 +140,7 @@ namespace BarberShop.Web.Services
             }
         }
 
-        public  async Task<User> GetUserAsync(string email)
+        public async Task<User> GetUserAsync(string email)
         {
             User? user = await _context.Users.Include(u => u.BarberShopRole)
                                              .FirstOrDefaultAsync(u => u.Email == email);
@@ -144,14 +148,12 @@ namespace BarberShop.Web.Services
             return user;
         }
 
-
         public async Task<User> GetUserAsync(Guid id)
         {
-           
+
             return await _context.Users.Include(u => u.BarberShopRole).FirstOrDefaultAsync(u => u.Id == id.ToString());
 
         }
-
 
         public async Task<SignInResult> LoginAsync(LoginDTO dto)
         {
@@ -161,6 +163,34 @@ namespace BarberShop.Web.Services
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(User user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<Response<User>> UpdateUserAsync(UserDTO dto)
+        {
+            try
+            {
+                User user = await GetUserAsync(dto.id);
+                user.PhoneNumber = dto.PhoneNumber;
+                user.Document = dto.Document;
+                user.FirstName = dto.FirstName;
+                user.LastName = dto.LastName;
+                user.BarberShopRoleId = dto.BarberShopRoleId;
+
+                _context.Users.Update(user);
+
+                await _context.SaveChangesAsync();
+
+                return ResponseHelper<User>.MakeResponseSuccess(user, "Usuario actualizado con éxito");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHelper<User>.MakeResponseFail(ex);
+            }
         }
     }
 }

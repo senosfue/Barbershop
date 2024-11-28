@@ -1,6 +1,6 @@
 ﻿@model HaircutDTO
 @{
-    ViewData["Title"] = "añadir Corte de cabello";
+    ViewData["Title"] = "añadir Corte";
 }
 
 <div class="pagetitle">
@@ -9,7 +9,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
             <li class="breadcrumb-item"><a asp-action="Index">Blog</a></li>
-            <li class="breadcrumb-item active">Nuevo Haircut</li>
+            <li class="breadcrumb-item active">Nuevo Corte</li>
         </ol>
     </nav>
 </div>
@@ -17,7 +17,7 @@
 <section class="section dashboard">
 
     <div class="card-body">
-        <h5 class="card-title text-primary">Nuevo Haircut</h5>
+        <h5 class="m-2 font-weight-bold col-md-11" style="font-family: 'Roboto', sans-serif; color: #000000; font-style: italic; padding: 10px">Nuevo Haircut</h5>
 
 
         <form class="row g-3" asp-action="Create" method="POST">
@@ -47,8 +47,8 @@
 
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Guardar</button>
-                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                <button type="submit" class="btn btn-primary" style="background-color: red; border-color: white">Guardar</button>
+                <a asp-action="Index" class="btn btn-secondary" style="background-color: black; border-color: black; color: white;">Volver</a>
             </div>
         </form>
     </div>

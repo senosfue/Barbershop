@@ -18,12 +18,13 @@ namespace BarberShop.Web.Controllers
         private readonly ICombosHelper _combosHelper;
         private readonly INotyfService _notifyService;
         private readonly IUsersServices _usersService;
-
-        public UsersController(ICombosHelper combosHelper, INotyfService notifyService, IUsersServices usersService)
+        private readonly IConverterHelper _converterHelper;
+        public UsersController(ICombosHelper combosHelper, INotyfService notifyService, IUsersServices usersService, IConverterHelper converterHelper)
         {
             _combosHelper = combosHelper;
             _notifyService = notifyService;
             _usersService = usersService;
+            _converterHelper = converterHelper;
         }
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] int? RecordsPerPage,
@@ -46,7 +47,7 @@ namespace BarberShop.Web.Controllers
         {
             UserDTO dto = new UserDTO
             {
-               BarberShopRoles = await _combosHelper.GetCombosBarberShopRolesAsync(),
+                BarberShopRoles = await _combosHelper.GetCombosBarberShopRolesAsync(),
             };
 
             return View(dto);
@@ -78,5 +79,49 @@ namespace BarberShop.Web.Controllers
                 return View(dto);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            if (Guid.Empty.Equals(id))
+            {
+                return NotFound();
+            }
+
+            User user = await _usersService.GetUserAsync(id);
+
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            UserDTO dto = await _converterHelper.ToUserDTOAsync(user, false);
+
+            return View(dto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(UserDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                _notifyService.Error("Debe ajustar los errores de validación");
+                dto.BarberShopRoles = await _combosHelper.GetCombosBarberShopRolesAsync();
+                return View(dto);
+            }
+
+            Response<User> response = await _usersService.UpdateUserAsync(dto);
+
+            if (response.IsSuccess)
+            {
+                _notifyService.Success(response.Message);
+                return RedirectToAction(nameof(Index));
+            }
+
+            _notifyService.Error(response.Message);
+            dto.BarberShopRoles = await _combosHelper.GetCombosBarberShopRolesAsync();
+            return View(dto);
+        }
     }
+
 }

@@ -20,7 +20,7 @@
     @* Rol *@
     <div class="card">
         <div class="card-body">
-            <h3 class="card-title">Editar Rol</h3>
+            <h3 class="m-2 font-weight-bold col-md-11" style="font-family: 'Roboto', sans-serif; color: #000000; font-style: italic; padding: 10px">Editar Rol</h3>
 
             <form class="row g-3" asp-action="Edit" method="POST" id="frmUpdate">
 
@@ -37,8 +37,8 @@
     <partial name="_Permissions" />
 
     <div class="text-center">
-        <button type="submit" class="btn btn-primary" form="frmUpdate" id="btnSave">Guardar</button>
-        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+        <button type="submit" class="btn btn-primary" form="frmUpdate" id="btnSave" style="background-color: red; border-color: white">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary" style="background-color: black; border-color: black; color: white;">Volver</a>
     </div>
 
 </section>

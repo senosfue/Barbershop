@@ -36,7 +36,7 @@
                 @if (await _usersService.CurrentUserIsAuthorizedAsync("createCategories", "Categorias"))
                 {
                     <div class="col-md-1">
-                        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-square-fill"></i></a>
+                        <a asp-action="Create" class="btn bg-danger text-white"><i class="bi bi-plus-square-fill"></i></a>
                     </div>
                 }
 
@@ -52,12 +52,12 @@
                 <input type="hidden" name="Page" value="@Model.CurrentPage" />
                 <input type="hidden" name="RecordsPerPage" value="@Model.RecordsPerPage" />
 
-                <div class="input<group mb-3">
+                <div class="input-group mb-3">
 
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar..." aria-label="Search" asp-form="@Model.Filter" name="Filter" />
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar.." aria-label="Search" asp-for="@Model.Filter" name="Filter">
 
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn bg-danger text-white" type="submit">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>

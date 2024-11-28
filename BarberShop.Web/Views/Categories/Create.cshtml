@@ -15,7 +15,7 @@
 <section class="category dashboard">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title text-bg-primary">Nueva Categoria</h5>
+            <h5 class="m-2 font-weight-bold col-md-11" style="font-family: 'Roboto', sans-serif; color: #000000; font-style: italic; padding: 10px">Nueva Categoria</h5>
             <!-- Floating Labels Form -->
 
 
@@ -42,7 +42,7 @@
                 <div class="row mb-3" >
                     <div class="col-sm-10 offset-sm-2">
                         <div class="form-check">
-                            <input asp-for="Trending" class="form-check-input" type="checkbox" id="gridCheck1">
+                            <input asp-for="Trending" class="form-check-input" style="background-color: red; border-color: black;" type="checkbox" id="gridCheck1" type="checkbox" id="gridCheck1">
                             <label asp-for="Trending" class="form-check-label" for="gridCheck1">
                              
                                 En tendencia
@@ -61,8 +61,8 @@
 
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                    <button type="submit" class="btn btn-primary" style="background-color: red; border-color: white">Guardar</button>
+                    <a asp-action="Index" class="btn btn-secondary" style="background-color: black; border-color: black; color: white;">Volver</a>
                 </div>
             </form><!-- End floating Labels Form -->
         </div>
